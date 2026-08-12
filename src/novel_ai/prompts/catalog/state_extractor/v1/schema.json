@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "artifactType", "sceneId", "events", "facts", "uncertainFacts"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "artifactType": {"const": "CHANGE_SET_PROPOSAL"},
+    "sceneId": {"type": "string", "minLength": 1},
+    "events": {"type": "array", "items": {"$ref": "#/$defs/proposal"}},
+    "facts": {"type": "array", "items": {"$ref": "#/$defs/proposal"}},
+    "uncertainFacts": {"type": "array", "items": {"$ref": "#/$defs/proposal"}}
+  },
+  "$defs": {
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "payload", "evidenceStart", "evidenceEnd", "confidence"],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "payload": {"type": "object"},
+        "evidenceStart": {"type": "integer", "minimum": 0},
+        "evidenceEnd": {"type": "integer", "minimum": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    }
+  }
+}

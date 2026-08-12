@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "artifactType",
+    "candidateId",
+    "description",
+    "corePitch",
+    "themes",
+    "mainPlot",
+    "outlineMarkdown",
+    "endingConstraints",
+    "storyBible",
+    "styleContract",
+    "forbiddenContent"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "artifactType": {"const": "WORK_PLANNING_CANDIDATE"},
+    "candidateId": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 20, "maxLength": 4000},
+    "corePitch": {"type": "string", "minLength": 40, "maxLength": 20000},
+    "themes": {"type": "string", "minLength": 20, "maxLength": 20000},
+    "mainPlot": {"type": "string", "minLength": 200, "maxLength": 100000},
+    "outlineMarkdown": {"type": "string", "minLength": 800, "maxLength": 200000},
+    "endingConstraints": {"type": "string", "minLength": 40, "maxLength": 50000},
+    "storyBible": {"type": "string", "minLength": 300, "maxLength": 200000},
+    "styleContract": {"type": "string", "minLength": 80, "maxLength": 50000},
+    "forbiddenContent": {"type": "string", "minLength": 80, "maxLength": 50000}
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "key": "state_extractor",
+  "version": 1,
+  "role": "state_extractor",
+  "description": "从已通过纯净度门禁的正文中提取可验证的事件与事实提案。",
+  "required_variables": ["scene_id", "prose", "baseline_state", "event_type_catalog", "locked_constraints"],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

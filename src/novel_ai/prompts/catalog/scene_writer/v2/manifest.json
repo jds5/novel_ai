@@ -1,0 +1,16 @@
+{
+  "key": "scene_writer",
+  "version": 2,
+  "role": "chapter_prose_writer",
+  "description": "依据章节任务、前章结尾与字数窗口生成连续且纯净的完整章节正文。",
+  "required_variables": [
+    "scene_plan",
+    "canonical_facts",
+    "draft_overlay",
+    "recent_prose",
+    "style_contract",
+    "forbidden_content"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

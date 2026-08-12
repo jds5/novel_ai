@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <title>砚台 · 长篇写作工作台</title>
+    <link rel="stylesheet" href="/app/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/app/" aria-label="返回写作工作台">
+          <span class="brand-mark">砚</span>
+          <span><strong>砚台</strong><small>长篇写作工作台</small></span>
+        </a>
+        <label class="work-switcher">
+          <span>当前作品</span>
+          <select id="work-select" aria-label="选择作品"></select>
+        </label>
+        <div class="top-actions">
+          <span id="save-state" class="save-state">尚未选择章节</span>
+          <button id="work-settings-button" class="button ghost overview-trigger" type="button">作品总览</button>
+          <button id="new-work-button" class="button ghost" type="button">新建作品</button>
+          <button id="new-chapter-button" class="button primary" type="button">新建章节</button>
+        </div>
+      </header>
+
+      <main id="workspace" class="workspace">
+        <aside class="chapter-rail" aria-label="章节导航">
+          <div class="rail-heading">
+            <div><p class="eyebrow">MANUSCRIPT</p><h1 id="work-title">选择一部作品</h1></div>
+            <button id="collapse-rail" class="icon-button" type="button" aria-label="收起章节栏">‹</button>
+          </div>
+          <div class="progress-card">
+            <div><span>全书进度</span><strong id="work-progress">0 字</strong></div>
+            <div class="progress-track"><i id="work-progress-bar"></i></div>
+            <small id="work-meta">0 章 · 尚未发布</small>
+          </div>
+          <div class="chapter-tools">
+            <input id="chapter-search" type="search" placeholder="搜索章节标题" aria-label="搜索章节" />
+            <button id="status-filter" class="filter-button" type="button">全部状态</button>
+          </div>
+          <ol id="chapter-list" class="chapter-list"></ol>
+          <button id="load-more" class="load-more" type="button" hidden>加载更多章节</button>
+        </aside>
+
+        <section class="editor-pane">
+          <div id="empty-state" class="empty-state">
+            <span class="empty-seal">起</span>
+            <h2>从一章开始，铺开一部长篇</h2>
+            <p>先创建作品和章节，写下本章任务。保存正文，或让模型生成一份待审候选。</p>
+            <button id="empty-create" class="button primary" type="button">创建第一章</button>
+          </div>
+
+          <div id="editor-view" class="editor-view" hidden>
+            <div class="chapter-header">
+              <div class="chapter-identity">
+                <span id="chapter-number" class="chapter-number">第一章</span>
+                <input id="chapter-title" class="chapter-title" aria-label="章节标题" placeholder="无题" />
+              </div>
+              <div class="chapter-actions">
+                <button id="toggle-preview" class="button ghost active" type="button">预览</button>
+                <button id="save-button" class="button ghost" type="button">保存 Ctrl+S</button>
+                <button id="generate-button" class="button ink" type="button">生成候选</button>
+                <button id="publish-button" class="button primary" type="button">发布版本</button>
+              </div>
+            </div>
+
+            <div class="editor-grid">
+              <div class="manuscript-column">
+                <textarea id="chapter-content" spellcheck="false" aria-label="Markdown 正文"></textarea>
+                <article id="markdown-preview" class="markdown-preview"></article>
+                <footer class="editor-footer">
+                  <span id="char-count">0 字</span>
+                  <span id="revision-label">尚无版本</span>
+                  <span id="chapter-status">未开始</span>
+                </footer>
+              </div>
+
+              <aside class="brief-panel" aria-label="章节生成设置">
+                <div class="panel-heading"><div><p class="eyebrow">CHAPTER BRIEF</p><h2>本章任务</h2></div><span id="brief-state" class="dot-status">未保存</span></div>
+                <label>叙事任务<textarea id="generation-brief" rows="10" placeholder="例如：主角在雨夜首次进入旧城，发现断剑徽记；本章只制造怀疑，不揭示身份。"></textarea></label>
+                <label>目标字数<div class="number-field"><input id="target-count" type="number" min="100" max="200000" step="100" value="2500" /><span>字</span></div><small class="field-hint">作为创作目标；小幅偏差不会阻止候选稿。</small></label>
+                <div id="generation-card" class="generation-card" hidden>
+                  <div><span class="pulse"></span><strong id="generation-title">正在生成</strong></div>
+                  <p id="generation-detail">正在准备上下文……</p>
+                  <div id="generation-steps" class="step-list"></div>
+                  <button id="resume-generation" class="button ghost compact" type="button" hidden>恢复任务</button>
+                </div>
+                <div class="revision-panel">
+                  <div class="revision-heading"><strong>版本历史</strong><small>打开旧版后保存，会形成新版本</small></div>
+                  <div id="revision-list" class="revision-list"></div>
+                </div>
+                <div class="storage-note">
+                  <strong>版本与存储</strong>
+                  <p>每次保存都会创建不可变版本。章节列表只读取摘要，正文仅在打开章节时加载。</p>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="work-dialog">
+      <form id="work-form" method="dialog">
+        <div class="dialog-heading"><span class="dialog-seal">书</span><div><h2>新建作品</h2><p>为长篇建立一个独立事实空间。</p></div></div>
+        <label>作品名<input id="new-work-title" required maxlength="300" placeholder="例如：旧城铸剑录" /></label>
+        <label>作品简介（可选正式字段）<textarea id="new-work-description" rows="4" maxlength="4000" placeholder="已确定时可填写；稍后也能手工编辑或由模型完整生成"></textarea></label>
+        <label>一句话创意（生成大纲时必填）<textarea id="new-work-intent" rows="3" maxlength="1000" placeholder="例如：一个失去名字的铸剑师回到所有人都认识他的旧城。"></textarea><small class="field-hint">选择“仅创建”时可以留空；选择生成时，模型会据此完成全部规划字段。</small></label>
+        <div class="dialog-actions"><button class="button ghost" value="cancel" formnovalidate>取消</button><button class="button ghost" value="draft">仅创建</button><button id="create-work-submit" class="button primary" value="generate">创建并生成大纲</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="chapter-dialog">
+      <form id="chapter-form" method="dialog">
+        <div class="dialog-heading"><span class="dialog-seal">章</span><div><h2>新建章节</h2><p>正文可以稍后手写或生成。</p></div></div>
+        <label>章节标题<input id="new-chapter-title" maxlength="300" placeholder="例如：雨夜入城" /></label>
+        <label>本章任务<textarea id="new-chapter-brief" rows="6" maxlength="20000" placeholder="冲突、信息、情绪与章末悬念"></textarea></label>
+        <label>目标字数<input id="new-chapter-target" type="number" min="100" max="200000" value="2500" /><small class="field-hint">这是目标，不是必须精确达到的配额。</small></label>
+        <div class="dialog-actions"><button class="button ghost" value="cancel" formnovalidate>取消</button><button id="create-chapter-submit" class="button primary" value="default">创建章节</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="overview-dialog" class="overview-dialog">
+      <div class="overview-shell">
+        <header class="overview-heading">
+          <div><p class="eyebrow">STORY BIBLE</p><h2 id="overview-title">作品总览</h2><p id="overview-description" class="overview-description"></p></div>
+          <button class="icon-button" type="button" data-close-dialog="overview-dialog" aria-label="关闭作品总览">×</button>
+        </header>
+        <div class="overview-grid">
+          <section class="overview-card overview-card-wide"><span>核心卖点</span><article id="overview-pitch"></article></section>
+          <section class="overview-card"><span>主题</span><article id="overview-themes"></article></section>
+          <section class="overview-card"><span>结局约束</span><article id="overview-ending"></article></section>
+          <section class="overview-card overview-card-wide"><span>全文主线</span><article id="overview-main-plot"></article></section>
+          <section class="overview-card overview-card-wide"><span>分卷与剧情大纲</span><article id="overview-outline"></article></section>
+          <section class="overview-card overview-card-wide"><span>故事圣经与永久设定</span><article id="overview-bible"></article></section>
+          <section class="overview-card"><span>文风契约</span><article id="overview-style"></article></section>
+          <section class="overview-card"><span>禁写与保密约束</span><article id="overview-forbidden"></article></section>
+        </div>
+        <div class="dialog-actions"><button class="button ghost" type="button" data-close-dialog="overview-dialog">关闭</button><button id="overview-edit-button" class="button primary" type="button">编辑作品规划</button></div>
+      </div>
+    </dialog>
+
+    <dialog id="settings-dialog" class="planning-dialog">
+      <form id="settings-form" method="dialog">
+        <div class="dialog-heading"><span class="dialog-seal">典</span><div><h2>作品规划与设定</h2><p>这些内容按作品版本进入后续章节生成上下文。</p></div></div>
+        <div class="planning-mode-switch" role="group" aria-label="大纲编辑方式">
+          <button id="planning-mode-manual" class="planning-mode-option active" type="button" aria-pressed="true"><strong>逐项填写</strong><small>编辑每个规划字段</small></button>
+          <button id="planning-mode-ai" class="planning-mode-option" type="button" aria-pressed="false"><strong>一句话生成</strong><small>让模型扩展完整大纲</small></button>
+        </div>
+        <section id="planning-ai-panel" class="planning-mode-panel" hidden>
+          <div class="planning-assistant">
+            <div class="assistant-heading"><div><p class="eyebrow">ONE-LINE OUTLINE</p><h3>一句话生成完整大纲</h3><p>输入核心创意即可。每次点击都从头生成全新候选，不拼接旧结果，也不会自动覆盖正式规划。</p></div><button id="generate-planning-button" class="button ink" type="button">生成完整大纲</button></div>
+            <label>一句话创意<textarea id="planning-intent" rows="3" maxlength="1000" placeholder="例如：一个替死人写遗书的落魄书生，发现自己写下的内容都会成为现实。"></textarea><small class="field-hint">可以包含题材、主角或核心矛盾，不必预先写出人物表和分卷。</small></label>
+            <div id="planning-generation-state" class="assistant-state" hidden><span class="pulse"></span><strong id="planning-generation-title">正在独立生成整套规划</strong><small id="planning-generation-detail">正在准备模型上下文……</small></div>
+            <div class="candidate-history"><div><strong>本浏览器临时候选</strong><small>刷新仍保留；关闭标签页后由浏览器清理，不属于正式作品。</small></div><div id="planning-candidate-list" class="candidate-list"><small>尚无候选</small></div></div>
+          </div>
+        </section>
+        <section id="planning-manual-panel" class="planning-mode-panel">
+          <p class="planning-mode-note">所有字段在正式生成章节前都可继续修改。载入模型候选后也会回到这里逐项校订。</p>
+          <label>作品简介<textarea id="settings-description" rows="3" maxlength="4000"></textarea></label>
+          <div class="settings-grid">
+            <label>核心卖点<textarea id="settings-pitch" rows="5" maxlength="20000" placeholder="读者持续追读的核心期待、身份反差与独特机制"></textarea></label>
+            <label>主题<textarea id="settings-themes" rows="5" maxlength="20000" placeholder="作品要反复探讨的价值冲突与情绪母题"></textarea></label>
+          </div>
+          <label>全文主线<textarea id="settings-main-plot" rows="8" maxlength="100000" placeholder="主角初始缺口、核心欲望、总冲突、关键质变和最终走向"></textarea></label>
+          <label>分卷与剧情大纲（Markdown）<textarea id="settings-outline" rows="12" maxlength="200000" placeholder="## 第一卷\n阶段目标、主要敌人、关系变化、高潮与卷末状态"></textarea></label>
+          <label>结局约束<textarea id="settings-ending" rows="5" maxlength="50000" placeholder="必须保留的结局、人物命运和最终承诺回收"></textarea></label>
+          <label>故事圣经与永久设定<textarea id="settings-bible" rows="10" maxlength="200000" placeholder="人物身份、世界规则、能力边界、地理势力与不可改变的事实"></textarea></label>
+          <div class="settings-grid">
+            <label>文风契约<textarea id="settings-style" rows="6" maxlength="50000" placeholder="视角、语言密度、对话风格、节奏与禁用表达"></textarea></label>
+            <label>禁写内容<textarea id="settings-forbidden" rows="6" maxlength="50000" placeholder="不能提前揭示的秘密、不能出现的桥段和内容边界"></textarea></label>
+          </div>
+        </section>
+        <div class="dialog-actions"><button class="button ghost" value="cancel" formnovalidate>取消</button><button id="save-planning-button" class="button primary" value="default">保存规划</button></div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/app/app.js" defer></script>
+  </body>
+</html>

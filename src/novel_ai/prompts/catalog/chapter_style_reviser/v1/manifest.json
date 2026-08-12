@@ -1,0 +1,9 @@
+{
+  "key": "chapter_style_reviser",
+  "version": 1,
+  "role": "style_reviser",
+  "description": "在不改变事实的前提下统一章节文风，并产生新的不可变候选正文。",
+  "required_variables": ["chapter_id", "chapter_prose", "style_contract", "canonical_facts", "revision_limits"],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

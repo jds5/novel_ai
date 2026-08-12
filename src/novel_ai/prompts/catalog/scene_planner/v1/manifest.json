@@ -1,0 +1,18 @@
+{
+  "key": "scene_planner",
+  "version": 1,
+  "role": "chapter_screenwriter",
+  "description": "把章节任务拆成可校验、可逐场生成的场景计划。",
+  "required_variables": [
+    "chapter_task",
+    "current_arc",
+    "character_states",
+    "world_state",
+    "relevant_events",
+    "foreshadows",
+    "recent_context",
+    "style_rules"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

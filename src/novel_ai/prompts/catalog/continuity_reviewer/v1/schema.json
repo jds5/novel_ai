@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "artifactType", "decision", "hardViolations", "softScores"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "artifactType": {"const": "CONTINUITY_REVIEW"},
+    "decision": {"enum": ["PASS", "REVIEW", "FAIL"]},
+    "hardViolations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rule", "severity", "candidateEvidence", "canonicalEvidence", "recommendation"],
+        "properties": {
+          "rule": {"type": "string", "minLength": 1},
+          "severity": {"enum": ["ERROR", "REVIEW"]},
+          "candidateEvidence": {"type": "string", "minLength": 1},
+          "canonicalEvidence": {"type": "string", "minLength": 1},
+          "recommendation": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "softScores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dimension", "score", "confidence", "evidence", "recommendation"],
+        "properties": {
+          "dimension": {"enum": ["CHARACTER_MOTIVATION", "EMOTIONAL_CONTINUITY", "CONFLICT_REPETITION", "PACING", "VOICE_DISTINCTION", "VOLUME_THEME_ALIGNMENT", "PROMISE_MAINTENANCE", "STYLE_CONTRACT"]},
+          "score": {"type": "integer", "minimum": 1, "maximum": 5},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "evidence": {"type": "string"},
+          "recommendation": {"type": "string"}
+        }
+      }
+    }
+  }
+}

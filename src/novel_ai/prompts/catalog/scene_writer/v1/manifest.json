@@ -1,0 +1,16 @@
+{
+  "key": "scene_writer",
+  "version": 1,
+  "role": "prose_writer",
+  "description": "依据已校验场景计划生成单一、纯净的小说正文产物。",
+  "required_variables": [
+    "scene_plan",
+    "canonical_facts",
+    "draft_overlay",
+    "recent_prose",
+    "style_contract",
+    "forbidden_content"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

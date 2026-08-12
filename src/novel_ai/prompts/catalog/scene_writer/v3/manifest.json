@@ -1,0 +1,16 @@
+{
+  "key": "scene_writer",
+  "version": 3,
+  "role": "chapter_prose_writer",
+  "description": "依据章节任务与前章结尾生成连续、完整、质量优先的章节正文。",
+  "required_variables": [
+    "scene_plan",
+    "canonical_facts",
+    "draft_overlay",
+    "recent_prose",
+    "style_contract",
+    "forbidden_content"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

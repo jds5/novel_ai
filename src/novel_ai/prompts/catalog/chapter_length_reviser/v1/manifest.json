@@ -1,0 +1,16 @@
+{
+  "key": "chapter_length_reviser",
+  "version": 1,
+  "role": "chapter_length_reviser",
+  "description": "在不改变章节核心事件的前提下，将正文修订到确定的字数窗口。",
+  "required_variables": [
+    "scene_id",
+    "chapter_task",
+    "prose_length",
+    "original_prose",
+    "style_contract",
+    "forbidden_content"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

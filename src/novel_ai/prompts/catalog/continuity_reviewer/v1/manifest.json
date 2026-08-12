@@ -1,0 +1,9 @@
+{
+  "key": "continuity_reviewer",
+  "version": 1,
+  "role": "continuity_reviewer",
+  "description": "检查硬一致性候选冲突与软一致性风险，提供证据但不修改事实。",
+  "required_variables": ["chapter_task", "prose_artifacts", "proposed_change_set", "canonical_context", "locked_constraints", "foreshadow_constraints"],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

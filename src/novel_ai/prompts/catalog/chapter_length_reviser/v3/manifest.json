@@ -1,0 +1,16 @@
+{
+  "key": "chapter_length_reviser",
+  "version": 3,
+  "role": "chapter_length_reviser",
+  "description": "对篇幅偏差明显的章节做一次质量优先的自然拓写或删减。",
+  "required_variables": [
+    "scene_id",
+    "chapter_task",
+    "prose_length",
+    "original_prose",
+    "style_contract",
+    "forbidden_content"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

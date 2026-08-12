@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "artifactType", "sceneId", "decision", "findings", "shouldRetry"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "artifactType": {"const": "PROSE_PURITY_REVIEW"},
+    "sceneId": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["PASS", "REVIEW", "FAIL"]},
+    "shouldRetry": {"type": "boolean"},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["category", "start", "end", "confidence", "evidence"],
+        "properties": {
+          "category": {"enum": ["PREAMBLE", "POSTSCRIPT", "REASONING_LEAK", "SELF_EVALUATION", "PROMPT_ECHO", "NON_PROSE_WRAPPER", "PLACEHOLDER", "REFUSAL_OR_TRUNCATION", "SUMMARY_INSTEAD_OF_SCENE"]},
+          "start": {"type": "integer", "minimum": 0},
+          "end": {"type": "integer", "minimum": 1},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "evidence": {"type": "string", "minLength": 1, "maxLength": 200}
+        }
+      }
+    }
+  }
+}

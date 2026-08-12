@@ -1,0 +1,14 @@
+{
+  "key": "work_planner",
+  "version": 2,
+  "role": "work_planning_assistant",
+  "description": "把作者的一句话创意扩展为完整、统一且可编辑的长篇作品规划候选。",
+  "required_variables": [
+    "work_profile",
+    "author_intent",
+    "previous_directions",
+    "generation_nonce"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

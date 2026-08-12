@@ -1,0 +1,16 @@
+{
+  "key": "chapter_length_reviser",
+  "version": 2,
+  "role": "chapter_length_reviser",
+  "description": "依据系统实测字符数对章节做定量扩写或删减，并保持核心事件不变。",
+  "required_variables": [
+    "scene_id",
+    "chapter_task",
+    "prose_length",
+    "original_prose",
+    "style_contract",
+    "forbidden_content"
+  ],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}

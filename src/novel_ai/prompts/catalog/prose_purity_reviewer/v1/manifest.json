@@ -1,0 +1,9 @@
+{
+  "key": "prose_purity_reviewer",
+  "version": 1,
+  "role": "prose_purity_reviewer",
+  "description": "识别正文中的思考泄漏、元话语、包装和截断，不改写正文。",
+  "required_variables": ["scene_id", "prose", "allowed_exceptions"],
+  "output_mode": "structured",
+  "schema_path": "schema.json"
+}
